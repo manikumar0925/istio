@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: episodedeployv1
+spec:
+ replicas: 1
+ selector:
+  matchLabels:
+   version: versionv1
+ template:
+  metadata:
+   name: episodev1
+   labels:
+    app: episode
+    version: versionv1
+  spec:
+   containers:
+    - image: kurapatimani/patientepisode:v1
+      name: episodec
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: episodedeployv2
+spec:
+ replicas: 1
+ selector:
+  matchLabels:
+   version: versionv2
+ template:
+  metadata:
+   name: episodev2
+   labels:
+    app: episode
+    version: versionv2
+  spec:
+   containers:
+    - image: kurapatimani/patientepisode:v2
+      name: episodec
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: epsvc
+spec:
+ ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+ selector:
+   app: episode
